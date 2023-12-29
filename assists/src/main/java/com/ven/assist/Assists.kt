@@ -7,6 +7,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.ven.assist.step.StepOperator
 
+@Suppress("unused")
 object Assists {
     /**
      * 无障碍服务，未开启前为null，使用注意判空

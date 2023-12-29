@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.ven.assist.Assists
 
+@Suppress("MemberVisibilityCanBePrivate")
 class StepOperator(
     val clazzName: String,
     val step: Int,

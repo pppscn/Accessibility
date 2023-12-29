@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.ven.assist.ext
 
 import android.graphics.Rect

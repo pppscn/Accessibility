@@ -6,6 +6,7 @@ import com.ven.assist.Assists
 /**
  * 步骤管理器
  */
+@Suppress("unused")
 object StepManager {
 
     private val stepCollector: HashMap<String, StepCollector> = hashMapOf()

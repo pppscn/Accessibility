@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.MotionEvent
@@ -14,10 +15,12 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ScreenUtils
+import kotlin.math.abs
 
 /**
  * 浮窗
  */
+@Suppress("DEPRECATION", "UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 class UIOver private constructor(builder: Builder) {
     private var mLayoutParams: WindowManager.LayoutParams? = null
     private lateinit var mWindowManager: WindowManager
@@ -106,7 +109,7 @@ class UIOver private constructor(builder: Builder) {
         mWindowManager = mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         //获取一个DisplayMetrics对象，该对象用来描述关于显示器的一些信息，例如其大小，密度和字体缩放。
         mDisplayMetrics = DisplayMetrics()
-        mWindowManager!!.defaultDisplay.getMetrics(mDisplayMetrics)
+        mWindowManager.defaultDisplay.getMetrics(mDisplayMetrics)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -139,7 +142,9 @@ class UIOver private constructor(builder: Builder) {
         mLayoutParams!!.gravity = Gravity.START or Gravity.TOP
         mLayoutParams!!.format = PixelFormat.RGBA_8888
         //此处mLayoutParams.type不建议使用TYPE_TOAST，因为在一些版本较低的系统中会出现拖动异常的问题，虽然它不需要权限
-        mLayoutParams!!.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mLayoutParams!!.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        }
         //悬浮窗背景明暗度0~1，数值越大背景越暗，只有在flags设置了WindowManager.LayoutParams.FLAG_DIM_BEHIND 这个属性才会生效
         mLayoutParams!!.dimAmount = 0.0f
         //悬浮窗透明度0~1，数值越大越不透明
@@ -152,7 +157,7 @@ class UIOver private constructor(builder: Builder) {
     fun setLayoutParams(width: Int, height: Int) {
         mLayoutParams!!.height = width
         mLayoutParams!!.width = height
-        mWindowManager!!.updateViewLayout(view, mLayoutParams)
+        mWindowManager.updateViewLayout(view, mLayoutParams)
     }
 
     private fun initStartCenter() {
@@ -254,7 +259,7 @@ class UIOver private constructor(builder: Builder) {
                 }
 
                 MotionEvent.ACTION_MOVE ->                     //在一些dpi较高的设备上点击view很容易触发 ACTION_MOVE，所以此处做一个过滤
-                    isIntercept = Math.abs(ev.x - interceptX) > MINIMUM_OFFSET && Math.abs(ev.y - interceptY) > MINIMUM_OFFSET
+                    isIntercept = abs(ev.x - interceptX) > MINIMUM_OFFSET && abs(ev.y - interceptY) > MINIMUM_OFFSET
 
                 MotionEvent.ACTION_UP -> {}
                 else -> {}
@@ -317,7 +322,7 @@ class UIOver private constructor(builder: Builder) {
         fun updateLocation(x: Float, y: Float) {
             mLayoutParams!!.x = x.toInt()
             mLayoutParams!!.y = y.toInt()
-            mWindowManager!!.updateViewLayout(view, mLayoutParams)
+            mWindowManager.updateViewLayout(view, mLayoutParams)
         }
 
         /**

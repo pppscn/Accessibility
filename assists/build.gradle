@@ -7,6 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
+        multiDexEnabled = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -16,6 +17,7 @@ android {
 
 dependencies {
     api 'com.blankj:utilcodex:1.31.1'
+    implementation("androidx.multidex:multidex:2.0.1")
 }
 
 // 注意 这边配置的groupId artifactId version 实际测试只对本地mavenLocal生效
